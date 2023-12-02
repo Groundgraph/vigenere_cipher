@@ -2,7 +2,7 @@
 # using the Vigenere cipher.
 def encode(input_file, output_file, key):
     # Open the input file for reading
-    input_file = open(input_file, "r")
+    input_file = open(input_file, "r", errors="ignore")
     # Open the output file for writing
     output_file = open(output_file, "w")
     # Read the input file into a string
