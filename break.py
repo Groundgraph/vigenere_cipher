@@ -60,13 +60,11 @@ def get_possible_key(encoded_string, key_length):
         for j in range(26):
             frequencies[i][j] = frequencies[i][j] / len(slices[i])
     key = ['*']*key_length
-    found_char_for_each_slice = [False]*key_length
     for i in range(key_length):
         for j in range(26):
             testtable = frequencies[i][j:]+frequencies[i][:j]
             if cosangle(english_frequencies,testtable) > 0.9:
                 key[i] = reversed_dict[j]
-                found_char_for_each_slice[i] = True
     
     # did we find a character for each slice?
     # convert the key list to a string
@@ -122,7 +120,10 @@ def break_vigenere_cipher(encoded_file_name):
     encoded_string = encoded_file.read()
     encoded_file.close()
     #we will only consider the first 3000 characters to make it faster
-    smaller_encoded_string = encoded_string[:3000]
+    chars_to_consider_for_find_length = 3000
+    if len(encoded_string) < 3000:
+        chars_to_consider_for_find_length = len(encoded_string)
+    smaller_encoded_string = encoded_string[:chars_to_consider_for_find_length]
     possible_length_of_keys = get_possible_length_of_key(smaller_encoded_string)
     
     for length_of_key in possible_length_of_keys:

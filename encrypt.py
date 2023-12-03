@@ -1,6 +1,6 @@
 # Description: This file contains the function that encodes a file using a key 
 # using the Vigenere cipher.
-def encode(input_file, output_file, key):
+def encrypt(input_file, output_file, key):
     # Open the input file for reading
     input_file = open(input_file, "r", errors="ignore")
     # Open the output file for writing
@@ -54,8 +54,8 @@ if __name__ == "__main__":
     # get the input file name from the user
     input_file = input("Enter the input file name: ")
     # get the output file name from the user
-    output_file = input("Enter the output file name: ")
+    output_file = input("Enter the encrypted file name: ")
     # get the key from the user
     key = input("Enter the key: ")
     # encode the file
-    encode(input_file, output_file, key)
+    encrypt(input_file, output_file, key)

@@ -1,6 +1,6 @@
-# Description: This file contains the function that decodes a file using a key 
+# Description: This file contains the function that decrypts a file using a key 
 # using the Vigenere cipher.
-def decode(encoded_file_name, decoded_file_name, key):
+def decrypte(encoded_file_name, decoded_file_name, key):
     encoded_file = open(encoded_file_name, "r", errors="ignore")
     decoded_file = open(decoded_file_name, "w")
     encoded_string = encoded_file.read()
@@ -41,7 +41,7 @@ def decode(encoded_file_name, decoded_file_name, key):
     decoded_file.close()
 
 if __name__ == "__main__":
-    encoded_file_name = input("Enter the encoded file name: ")
-    decoded_file_name = input("Enter the decoded file name: ")
+    encoded_file_name = input("Enter the encrypted file name: ")
+    decoded_file_name = input("Enter the decrypted name: ")
     key = input("Enter the key: ")
-    decode(encoded_file_name, decoded_file_name, key)
+    decrypte(encoded_file_name, decoded_file_name, key)
