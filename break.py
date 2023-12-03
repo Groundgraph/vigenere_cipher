@@ -1,6 +1,10 @@
 # This unit tries to break the Vigenere cipher by trying to find the key.
 
 from math import sqrt
+
+# Description: This function returns the cosine of the angle between two vectors.
+# the vectors are represented as lists of numbers.
+# that can be used to find if two vectors are similar.
 def cosangle(x,y):
  numerator = 0
  lengthx2 = 0
@@ -11,6 +15,9 @@ def cosangle(x,y):
     lengthy2 += y[i]*y[i]
  return numerator / sqrt(lengthx2*lengthy2)
 
+# Description: This function returns the possible key.
+# Key length has already been determined.
+# encoded string should be much longer than the key length. preferably 1000 times longer.
 def get_possible_key(encoded_string, key_length):
     english_frequencies_dict = {
         'a': 0.082, 'b': 0.015, 'c': 0.028, 'd': 0.043, 'e': 0.127, 'f': 0.022, 'g': 0.020, 'h': 0.061, 'i': 0.070, 'j': 0.002, 'k': 0.008, 'l': 0.040, 'm': 0.024, 'n': 0.067, 'o': 0.075, 'p': 0.019, 'q': 0.001, 'r': 0.060, 's': 0.063, 't': 0.091, 'u': 0.028, 'v': 0.010, 'w': 0.023, 'x': 0.001, 'y': 0.020, 'z': 0.001
@@ -67,8 +74,7 @@ def get_possible_key(encoded_string, key_length):
     
     return key
 
-def get_distances_between_repeated_strings(encoded_string, number_of_chars, factors):
-    distances = []
+def get_distances_between_repeated_strings(encoded_string, number_of_chars, distances):
     for i in range(0, len(encoded_string) - number_of_chars):
         substring = encoded_string[i:i+number_of_chars]
         for j in range(i+number_of_chars, len(encoded_string) - number_of_chars):
@@ -76,6 +82,10 @@ def get_distances_between_repeated_strings(encoded_string, number_of_chars, fact
                 distances.append(j-i)
     # make distances unique
     distances = list(set(distances))
+    return distances
+
+def get_factors_and_their_fequency(distances):
+    factors = {}
     for distance in distances:
         # we ignore key lengths less than 4 and greater than 20
         for i in range(4, 21):
@@ -86,19 +96,18 @@ def get_distances_between_repeated_strings(encoded_string, number_of_chars, fact
                 else:
                     # add the factor to the dictionary
                     factors[i] = 1
-    
-    
-    # sort the sorted_factors dictionary by value
     return factors
 
 
 # Description: This function returns the possible length of the key.
 def get_possible_length_of_key(encryped_string):
-    # create a dictionary to hold the factors and their frequency
-    factors = {}
-    factors = get_distances_between_repeated_strings(encryped_string, 3, factors)
-    factors = get_distances_between_repeated_strings(encryped_string, 4, factors)
-    factors = get_distances_between_repeated_strings(encryped_string, 5, factors)
+    # create a list to hold the distances between repeated strings
+    distances = []
+    distances = get_distances_between_repeated_strings(encryped_string, 3, distances)
+    distances = get_distances_between_repeated_strings(encryped_string, 4, distances)
+    distances = get_distances_between_repeated_strings(encryped_string, 5, distances)
+
+    factors = get_factors_and_their_fequency(distances)
 
     # sort the factors dictionary by value
     sorted_factors = sorted(factors.items(), key=lambda x: x[1], reverse=True)
@@ -112,7 +121,7 @@ def break_vigenere_cipher(encoded_file_name):
     encoded_file = open(encoded_file_name, "r", errors="ignore")
     encoded_string = encoded_file.read()
     encoded_file.close()
-    #we will only consider the first 3000 characters
+    #we will only consider the first 3000 characters to make it faster
     smaller_encoded_string = encoded_string[:3000]
     possible_length_of_keys = get_possible_length_of_key(smaller_encoded_string)
     
